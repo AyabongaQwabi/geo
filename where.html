@@ -11,42 +11,39 @@
 		
 		<div class='row'>
 			<div class="col s12">
-		      <ul class="tabs">
-		        <li class="tab col s3"><a class="active" href="#where">LOCATION </a></li>
-		        <li class="tab col s3"><a  href="#distance">DISTANCE</a></li>		        
-		      </ul>
-		    </div>
+		       		<ul class="tabs">
+		        		<li class="tab col s3"><a class="active" href="#where">LOCATION </a></li>
+		        		<li class="tab col s3"><a  href="#distance">DISTANCE</a></li>		        
+		      		</ul>
+			</div>
 			<div class='container center' id='where'>
 				<h1 ><b> Where is  ? </b></h1>
 				<div class='col s12 m12 card-panel grey lighten-3'>
-					<button id='clearBtn' class=' circle large blue'>clear</button>
-				    <div class='card-panel orange white-text col s12 m12' id='real'>
-				    </div>
+				    <button id='clearBtn' class=' circle large blue'>clear</button>
+				    <div class='card-panel orange white-text col s12 m12' id='real'> </div>
 
-					<h1 class='flow-text'> Enter co-ordinates below </h1>
-
-					<div class='col s12 m6'>
-						<label for='#lat'> Lattitude </label>
-						<input id='lat' type ='text'>
-					</div>
-
-					<div class='col s12 m6'>
-						<label for='#lat'> Longitude </label>
-						<input id='lng' type ='text'>
-					</div>
-					<div class='col s12 m12'>
-						<button id='getLocation' class='large blue btn col s12 m12'>Get Location</button> 
-					</div>
-					<br>
-					<div class='col s12 m12'>
-						<button id='currentLocation' class='large blue btn col s12 m12 '>Get my current location</button>
-					</div>
-					
-					<span class='chip transparent'><b><small> Google Maps Api </small></b></span>
-					<br>
-					
+				<h1 class='flow-text'> Enter co-ordinates below </h1>
+				<div class='col s12 m6'>
+					<label for='#lat'> Lattitude </label>
+					<input id='lat' type ='text'>
 				</div>
+				<div class='col s12 m6'>
+					<label for='#lng'> Longitude </label>
+					<input id='lng' type ='text'>
+				</div>
+				<div class='col s12 m12'>
+					<button id='getLocation' class='large blue btn col s12 m12'>Get Location</button> 
+				</div>
+				<br>
+					div class='col s12 m12'>
+					<button id='currentLocation' class='large blue btn col s12 m12 '>Get my current location</button>
+				</div>
+					
+				<span class='chip transparent'><b><small> Google Maps Api </small></b></span>
+				<br>
+					
 			</div>
+		</div>
 
 			<div class='container center' id='distance'>
 				<h1 class='flow-text'> <b>Calculate Distance</b> </h1>
@@ -116,120 +113,118 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
 	<script type='text/javascript'>
-		var lat = document.getElementById('lat'),
-			lng = document.getElementById('lng');
-		var pointA;
-		var pointB;
+	
+	var lat = document.getElementById('lat'),
+	    lng = document.getElementById('lng');
+	var pointA;
+	var pointB;
 
         var getBtn   = document.getElementById('getLocation')
         var currentBtn = document.getElementById('currentLocation')
-		var where    = document.getElementById('location');
-		var clearBtn = document.getElementById('clearBtn')
-		var showClearBtn =false;
-		clearBtn.style.display = 'none';
+	var where    = document.getElementById('location');
+	var clearBtn = document.getElementById('clearBtn')
+	var showClearBtn =false;
+	clearBtn.style.display = 'none';
 
-		currentBtn.addEventListener('click',function(){
-				navigator.geolocation.getCurrentPosition(				
-					function(location)
-					{
+	currentBtn.addEventListener('click',function(){
+		navigator.geolocation.getCurrentPosition(				
+			function(location)
+			{
 						
-						getRealLocation(location.coords.latitude,location.coords.longitude);
+				getRealLocation(location.coords.latitude,location.coords.longitude);
 			
-					}
-			    );
-		})
+			}
+		);
+	})
 
-		getBtn.addEventListener('click',function(){
-				navigator.geolocation.getCurrentPosition(				
-					function(location)
-					{
-						var latitude =lat.value;
-						var longitude = lng.value
-						if(latitude!='' && longitude!=''){
-							getRealLocation(latitude,longitude);
-						}
-						else{
-							lat.stye
-							Materialize.toast('insert Coordinates into text boxes', 4000) 
-						}
+	getBtn.addEventListener('click',function(){
+		navigator.geolocation.getCurrentPosition(				
+			function(location)
+			{
+				var latitude =lat.value;
+				var longitude = lng.value
+				if(latitude!='' && longitude!=''){
+					getRealLocation(latitude,longitude);
+				}
+				else{
+					lat.stye
+					Materialize.toast('insert Coordinates into text boxes', 4000) 
+				}
+	
+			}
+	    );
+	})
+	clearBtn.addEventListener('click',function(){reload();clearBtn.style.display = 'none';})	
+	function reload(){document.getElementById('real').innerHTML='';}
+
+	document.getElementById('loc1lng').addEventListener('blur',function(){
+			var lat1 = document.getElementById('loc1lat').value;
+			var lng1= this.value;				
+			var hint=document.getElementById('loc1hint')
+			if(getMapLocation(lat1,lng1,hint)!=undefined){					
+				getMapLocation(lat1,lng1,hint);
+			}
+			else{
+				document.getElementById('loc1hint').innerHTML ='Are you sure about your co-ordinates ?'
+			}
 			
-					}
-			    );
-		})
+	})
+	document.getElementById('loc2lng').addEventListener('blur',function(){
+			var lat1 = document.getElementById('loc2lat').value;
+			var lng1= this.value;				
+			var hint=document.getElementById('loc2hint')
+			if(getMapLocation(lat1,lng1,hint)!=undefined){					
+				getMapLocation(lat1,lng1,hint);
+			}
+			else{
+				document.getElementById('loc2hint').innerHTML ='Are you sure about your co-ordinates ?'
+			}
+			
+	})
+	function getRealLocation(lat,lng){
+		    clearBtn.style.display = 'inline';			    
+		    var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+lat+','+lng+'&sensor=false'
+			var whereami;		        
+			$.get(url,function(data){
+	                whereami=data.results[0].formatted_address
+					document.getElementById('real').innerHTML='<h1>'+whereami+'</h1>'						
+					closer(document.getElementById('clearBtn'))
+	               }
+	          );
+	}
+
+	function getMapLocation(latt,lngi,thediv){
+		    clearBtn.style.display = 'inline';			    
+		    var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+latt+','+lngi+'&sensor=false'
+			var whereami={};		        
+			$.get(url,function(data){					
+				whereami = data.results[0].formatted_address;
+				thediv.innerHTML=whereami
+				
+			});
+			
+			
+	}
+
+	function calculate(point1latelem,point1lngelem,point2latelem,point2lngelem,resultsdiv){
+		console.log('----------------------------')
+		console.log('        calculating          ')
+		console.log('----------------------------')
+		point1latelem =document.getElementById(point1latelem).value;
+		point1lngelem =document.getElementById(point1lngelem).value;
+		point2latelem =document.getElementById(point2latelem).value;
+		point2lngelem =document.getElementById(point2lngelem).value;
+		console.log('POINT 1 :'+point1latelem+'  '+point1lngelem)
+		console.log('POINT 2 :'+point2latelem+'  '+point2lngelem)
 		
-
-
-		clearBtn.addEventListener('click',function(){reload();clearBtn.style.display = 'none';})	
-		function reload(){document.getElementById('real').innerHTML='';}
-
-		document.getElementById('loc1lng').addEventListener('blur',function(){
-				var lat1 = document.getElementById('loc1lat').value;
-				var lng1= this.value;				
-				var hint=document.getElementById('loc1hint')
-				if(getMapLocation(lat1,lng1,hint)!=undefined){					
-					getMapLocation(lat1,lng1,hint);
-				}
-				else{
-					document.getElementById('loc1hint').innerHTML ='Are you sure about your co-ordinates ?'
-				}
-				
-		})
-		document.getElementById('loc2lng').addEventListener('blur',function(){
-				var lat1 = document.getElementById('loc2lat').value;
-				var lng1= this.value;				
-				var hint=document.getElementById('loc2hint')
-				if(getMapLocation(lat1,lng1,hint)!=undefined){					
-					getMapLocation(lat1,lng1,hint);
-				}
-				else{
-					document.getElementById('loc2hint').innerHTML ='Are you sure about your co-ordinates ?'
-				}
-				
-		})
-		function getRealLocation(lat,lng){
-			    clearBtn.style.display = 'inline';			    
-			    var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+lat+','+lng+'&sensor=false'
-				var whereami;		        
-				$.get(url,function(data){
-		                whereami=data.results[0].formatted_address
-						document.getElementById('real').innerHTML='<h1>'+whereami+'</h1>'						
-						closer(document.getElementById('clearBtn'))
-		               }
-		          );
-		}
-
-		function getMapLocation(latt,lngi,thediv){
-			    clearBtn.style.display = 'inline';			    
-			    var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+latt+','+lngi+'&sensor=false'
-				var whereami={};		        
-				$.get(url,function(data){					
-					whereami = data.results[0].formatted_address;
-					thediv.innerHTML=whereami
-					
-				});
-				
-				
-		}
-
-		function calculate(point1latelem,point1lngelem,point2latelem,point2lngelem,resultsdiv){
-			console.log('----------------------------')
-			console.log('        calculating          ')
-			console.log('----------------------------')
-			point1latelem =document.getElementById(point1latelem).value;
-			point1lngelem =document.getElementById(point1lngelem).value;
-			point2latelem =document.getElementById(point2latelem).value;
-			point2lngelem =document.getElementById(point2lngelem).value;
-			console.log('POINT 1 :'+point1latelem+'  '+point1lngelem)
-			console.log('POINT 2 :'+point2latelem+'  '+point2lngelem)
-			
-			var distance = geolib.getDistance(
-											    {latitude: point1latelem, longitude: point1lngelem},
-											    {latitude: point2latelem, longitude: point2lngelem}
-											);
-			document.getElementById(resultsdiv).innerHTML = "Distance from <b class='blue-text darken-3'>"+document.getElementById('loc1hint').innerHTML +'</b><hr>'
-															+"To <b class='red-text darken-3'>"+document.getElementById('loc2hint').innerHTML+'</b><hr>'
-															+'is '+ (distance/1000) +'kilometers long'
-        }
+		var distance = geolib.getDistance(
+							{latitude: point1latelem, longitude: point1lngelem},
+							{latitude: point2latelem, longitude: point2lngelem}
+						 );
+		document.getElementById(resultsdiv).innerHTML = "Distance from <b class='blue-text darken-3'>"+document.getElementById('loc1hint').innerHTML +'</b><hr>'
+														+"To <b class='red-text darken-3'>"+document.getElementById('loc2hint').innerHTML+'</b><hr>'
+														+'is '+ (distance/1000) +'kilometers long'
+}
 </script>															
 </html>
 
